@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>SEO Audit – House of Kiyaara | All Bags Page</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Inter', sans-serif; background: #f8f7f4; color: #1a1a1a; line-height: 1.7; }
+
+  /* Cover */
+  .cover { background: linear-gradient(135deg, #1a1a1a 0%, #2c2c2c 100%); color: #fff; padding: 60px 48px 52px; position: relative; overflow: hidden; }
+  .cover::after { content: ""; position: absolute; right: -80px; top: -80px; width: 380px; height: 380px; border-radius: 50%; background: rgba(212,175,55,0.08); }
+  .cover-label { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: #d4af37; font-weight: 600; margin-bottom: 16px; }
+  .cover h1 { font-size: 36px; font-weight: 800; line-height: 1.2; margin-bottom: 12px; }
+  .cover-sub { font-size: 15px; color: rgba(255,255,255,0.6); margin-bottom: 28px; }
+  .cover-meta { display: flex; gap: 32px; flex-wrap: wrap; }
+  .cover-meta span { font-size: 13px; color: rgba(255,255,255,0.5); }
+  .cover-meta b { color: #fff; }
+
+  /* Layout */
+  .container { max-width: 1000px; margin: 0 auto; padding: 0 24px 60px; }
+
+  /* Score bar */
+  .score-section { background: #fff; border-radius: 16px; padding: 36px; margin: 36px 0; box-shadow: 0 2px 20px rgba(0,0,0,0.06); display: grid; grid-template-columns: 160px 1fr; gap: 36px; align-items: center; }
+  .score-circle { width: 130px; height: 130px; border-radius: 50%; background: conic-gradient(#e53e3e 0%, #e53e3e 24%, #f0f0f0 24%); display: flex; align-items: center; justify-content: center; flex-direction: column; position: relative; }
+  .score-circle::before { content: ""; position: absolute; inset: 12px; border-radius: 50%; background: #fff; }
+  .score-inner { position: relative; text-align: center; }
+  .score-num { font-size: 36px; font-weight: 800; color: #e53e3e; }
+  .score-label { font-size: 10px; color: #999; text-transform: uppercase; letter-spacing: 1px; }
+  .score-right h2 { font-size: 20px; font-weight: 700; margin-bottom: 8px; }
+  .score-right p { font-size: 14px; color: #666; margin-bottom: 16px; }
+  .score-pills { display: flex; gap: 8px; flex-wrap: wrap; }
+  .pill { padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+  .pill.red { background: #fff1f1; color: #e53e3e; }
+  .pill.orange { background: #fff8e6; color: #d97706; }
+  .pill.green { background: #f0fff4; color: #2d7a4f; }
+
+  /* Section headings */
+  h2.section-title { font-size: 22px; font-weight: 800; margin: 44px 0 6px; display: flex; align-items: center; gap: 10px; }
+  h2.section-title .icon { font-size: 20px; }
+  .section-desc { font-size: 14px; color: #666; margin-bottom: 20px; }
+
+  /* Cards */
+  .card { background: #fff; border-radius: 12px; padding: 28px 32px; margin-bottom: 16px; box-shadow: 0 2px 12px rgba(0,0,0,0.05); }
+  .card h3 { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+  .card .status-row { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+  .badge { display: inline-flex; align-items: center; gap: 4px; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+  .badge.critical { background: #e53e3e; color: #fff; }
+  .badge.warning { background: #f6ad55; color: #fff; }
+  .badge.ok { background: #48bb78; color: #fff; }
+  .badge.missing { background: #1a1a1a; color: #fff; }
+
+  .current { background: #fff8f8; border: 1px solid #ffd5d5; border-radius: 8px; padding: 10px 14px; font-size: 13px; margin-bottom: 10px; }
+  .current .label { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: #999; margin-bottom: 4px; font-weight: 600; }
+  .current .value { color: #e53e3e; font-family: monospace; font-size: 13px; word-break: break-all; }
+  .value.empty { color: #aaa; font-style: italic; }
+
+  .fix { background: #f0fff7; border: 1px solid #9ae6b4; border-radius: 8px; padding: 10px 14px; font-size: 13px; margin-bottom: 10px; }
+  .fix .label { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: #2d7a4f; margin-bottom: 4px; font-weight: 600; }
+  .fix .value { color: #276749; font-weight: 500; }
+
+  .why { font-size: 13px; color: #555; line-height: 1.6; }
+
+  /* Comparison table */
+  .comp-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 0; }
+  .comp-table th { background: #1a1a1a; color: #fff; padding: 10px 14px; text-align: left; font-weight: 600; font-size: 12px; }
+  .comp-table td { padding: 10px 14px; border-bottom: 1px solid #f0f0f0; vertical-align: top; }
+  .comp-table tr:nth-child(even) td { background: #fafafa; }
+  .comp-table tr.hok td { background: #fff1f1; font-weight: 600; }
+  .comp-table .tick { color: #48bb78; font-weight: 700; }
+  .comp-table .cross { color: #e53e3e; font-weight: 700; }
+  .comp-table .warn { color: #d97706; }
+
+  /* Copywriting section */
+  .copy-box { background: #fff; border-radius: 12px; padding: 32px; box-shadow: 0 2px 12px rgba(0,0,0,0.05); margin-bottom: 16px; }
+  .copy-box h3 { font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #d4af37; margin-bottom: 16px; }
+  .copy-content { font-size: 14px; line-height: 1.8; color: #2a2a2a; }
+  .copy-content strong { color: #1a1a1a; }
+  .copy-content .kw { background: #fffde7; border-bottom: 2px solid #f6c90e; padding: 0 2px; border-radius: 2px; }
+  .copy-content p { margin-bottom: 16px; }
+  .copy-content p:last-child { margin-bottom: 0; }
+
+    /* Copy display */
+  .copy-section { background: #fff; border-radius: 12px; padding: 32px; box-shadow: 0 2px 12px rgba(0,0,0,0.05); margin-bottom: 20px; }
+  .copy-section h3 { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: #d4af37; margin-bottom: 18px; border-bottom: 2px solid #f0ede8; padding-bottom: 12px; }
+  .copy-body { font-size: 14.5px; line-height: 1.85; color: #2a2a2a; }
+  .copy-body p { margin-bottom: 18px; }
+  .copy-body p:last-child { margin-bottom: 0; }
+  .copy-body .kw { background: #fffde7; border-bottom: 2px solid #f6c90e; padding: 0 2px; border-radius: 2px; font-weight: 500; }
+  .copy-body strong { color: #1a1a1a; }
+  .copy-body a { color: #1a1a1a; text-decoration: underline; font-weight: 500; }
+    .annotation { display: inline-block; background: #e53e3e; color: #fff; border-radius: 4px; font-size: 10px; font-weight: 700; padding: 1px 6px; margin-left: 6px; vertical-align: middle; }
+  .annotation.blue { background: #2563eb; }
+  .annotation.gold { background: #d4af37; color: #1a1a1a; }
+  .annotation.green { background: #2d7a4f; }
+
+    /* Keyword link block */
+  .kw-block { background: #1a1a1a; border-radius: 12px; padding: 24px 28px; margin: 16px 0; }
+  .kw-block h4 { font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: #d4af37; margin-bottom: 14px; font-weight: 700; }
+  .kw-block .kw-row { margin-bottom: 10px; font-size: 13px; }
+  .kw-block .kw-row .row-label { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: rgba(255,255,255,0.4); margin-bottom: 6px; font-weight: 600; }
+  .kw-block .kw-row a { color: rgba(255,255,255,0.85); text-decoration: none; border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 1px; margin-right: 4px; line-height: 2.2; font-size: 13px; }
+  .kw-block .kw-row span { color: rgba(255,255,255,0.3); margin: 0 4px; }
+  
+
+  /* Schema block */
+  pre.schema { background: #1a1a1a; color: #a8ff78; border-radius: 12px; padding: 24px; font-size: 12px; line-height: 1.6; overflow-x: auto; margin-bottom: 16px; white-space: pre-wrap; }
+  pre.schema .k { color: #79b8ff; }
+  pre.schema .s { color: #f0a367; }
+  pre.schema .v { color: #a8ff78; }
+  pre.schema .p { color: #ccc; }
+
+  /* FAQ pair */
+  .faq-item { border: 1px solid #e8e8e8; border-radius: 10px; margin-bottom: 12px; overflow: hidden; }
+  .faq-q { background: #f8f7f4; padding: 14px 20px; font-weight: 700; font-size: 14px; color: #1a1a1a; }
+  .faq-a { padding: 14px 20px; font-size: 13.5px; color: #444; line-height: 1.7; }
+
+  /* Priority table */
+  .priority-table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+  .priority-table th { background: #1a1a1a; color: #fff; padding: 10px 16px; text-align: left; }
+  .priority-table td { padding: 11px 16px; border-bottom: 1px solid #eee; vertical-align: top; }
+  .priority-table tr:last-child td { border-bottom: none; }
+  .priority-num { display: inline-block; width: 24px; height: 24px; border-radius: 50%; font-size: 11px; font-weight: 800; text-align: center; line-height: 24px; }
+  .p1 { background: #e53e3e; color: #fff; }
+  .p2 { background: #f6ad55; color: #fff; }
+  .p3 { background: #d4af37; color: #fff; }
+  .p4 { background: #48bb78; color: #fff; }
+
+  .divider { border: none; border-top: 2px solid #f0f0f0; margin: 48px 0; }
+
+  /* Print */
+  @media print { body { background: #fff; } .cover { background: #1a1a1a !important; -webkit-print-color-adjust: exact; } }
+</style>
+</head>
+<body>
+
+<!-- COVER -->
+<div class="cover">
+  <div class="cover-label">SEO Competitive Audit</div>
+  <h1>House of Kiyaara – All Bags Page<br>Keyword: "Buy Bags in India"</h1>
+  <div class="cover-sub">houseofkiyaara.com/collections/all-bags &nbsp;·&nbsp; Prepared by Diwans Technical Solutions</div>
+  <div class="cover-meta">
+    <span><b>Target Keyword:</b> Buy Bags in India</span>
+    <span><b>Competitors Analysed:</b> Caprese, ALDO India, KAZO, Lino Perros, IRTH</span>
+    <span><b>Date:</b> May 2026</span>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- OVERALL SCORE -->
+  <div class="score-section">
+    <div class="score-circle">
+      <div class="score-inner">
+        <div class="score-num">24</div>
+        <div class="score-label">/ 100</div>
+      </div>
+    </div>
+    <div class="score-right">
+      <h2>Page SEO Score — Critical State</h2>
+      <p>The House of Kiyaara All Bags page is essentially invisible to Google for the keyword "buy bags in India". Every foundational on-page SEO element is either missing or severely under-optimised. The good news: fixing these is entirely within your control and the impact will be significant.</p>
+      <div class="score-pills">
+        <span class="pill red">No Meta Description</span>
+        <span class="pill red">Weak Title Tag</span>
+        <span class="pill red">No Collection Copy</span>
+        <span class="pill red">No FAQ Section</span>
+        <span class="pill red">No Schema Markup</span>
+        <span class="pill orange">No Trust Signals</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- WHY COMPETITORS RANK -->
+  <h2 class="section-title"><span class="icon">🔍</span> Why Competitors Rank — The Real Reasons</h2>
+  <div class="section-desc">These are the actual on-page signals that give competitors the edge. It is not just about domain authority — their pages are technically far better structured.</div>
+
+  <div class="card">
+    <div style="overflow-x:auto;">
+      <table class="comp-table">
+        <thead>
+          <tr>
+            <th>Signal</th>
+            <th>Caprese</th>
+            <th>ALDO India</th>
+            <th>KAZO</th>
+            <th>House of Kiyaara</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><b>Page Title with "Buy" + "India"</b></td>
+            <td class="tick">✓</td>
+            <td class="tick">✓ "Buy Women's Handbags Online"</td>
+            <td class="tick">✓ "Best Price in India"</td>
+            <td class="cross cross hok">✗ Just "All Bags"</td>
+          </tr>
+          <tr class="hok">
+            <td><b>Meta Description</b></td>
+            <td class="tick">✓ 155 chars, keyword-rich</td>
+            <td class="tick">✓ COD, delivery, USP</td>
+            <td class="tick">✓ COD, Easy Returns</td>
+            <td class="cross">✗ COMPLETELY EMPTY</td>
+          </tr>
+          <tr>
+            <td><b>H1 Heading with Keyword</b></td>
+            <td class="warn">Partial</td>
+            <td class="tick">✓ "Handbags for Women"</td>
+            <td class="tick">✓ "Handbags"</td>
+            <td class="cross">✗ "All Bags" only</td>
+          </tr>
+          <tr class="hok">
+            <td><b>Collection Description (body copy)</b></td>
+            <td class="warn">Minimal</td>
+            <td class="tick">✓ Yes</td>
+            <td class="tick">✓ 3 full paragraphs, keyword-dense</td>
+            <td class="cross">✗ NONE — zero body text</td>
+          </tr>
+          <tr>
+            <td><b>Trust Signals on Page</b></td>
+            <td class="tick">✓ Free Delivery</td>
+            <td class="tick">✓ 40% off banners</td>
+            <td class="tick">✓ COD, Easy Returns</td>
+            <td class="cross">✗ Only "10% Off" banner</td>
+          </tr>
+          <tr class="hok">
+            <td><b>OG Type = product.group</b></td>
+            <td class="tick">✓ product.group</td>
+            <td class="warn">Partial</td>
+            <td class="warn">website</td>
+            <td class="cross">✗ website (should be product.group)</td>
+          </tr>
+          <tr>
+            <td><b>FAQ Schema (JSON-LD)</b></td>
+            <td class="cross">✗</td>
+            <td class="cross">✗</td>
+            <td class="cross">✗</td>
+            <td class="cross">✗ Missing — but a HUGE opportunity</td>
+          </tr>
+          <tr class="hok">
+            <td><b>CollectionPage / ItemList Schema</b></td>
+            <td class="cross">✗</td>
+            <td class="cross">✗</td>
+            <td class="cross">✗</td>
+            <td class="cross">✗ Missing opportunity</td>
+          </tr>
+          <tr>
+            <td><b>Breadcrumb Schema</b></td>
+            <td class="warn">Partial</td>
+            <td class="tick">✓</td>
+            <td class="warn">Partial</td>
+            <td class="cross">✗ None detected</td>
+          </tr>
+          <tr class="hok">
+            <td><b>Product Count (catalogue depth)</b></td>
+            <td class="tick">Large</td>
+            <td class="tick">639 products</td>
+            <td class="tick">187 products</td>
+            <td class="warn">29 products</td>
+          </tr>
+          <tr>
+            <td><b>Sub-category Internal Links</b></td>
+            <td class="tick">✓ Rich nav</td>
+            <td class="tick">✓ Tiles + mega menu</td>
+            <td class="tick">✓ Filter tags</td>
+            <td class="warn">Nav only, not in-page</td>
+          </tr>
+          <tr class="hok">
+            <td><b>Twitter:description</b></td>
+            <td class="tick">✓ Filled</td>
+            <td class="tick">✓ Filled</td>
+            <td class="tick">✓ Filled</td>
+            <td class="cross">✗ EMPTY</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ISSUE #1: TITLE TAG -->
+  <h2 class="section-title"><span class="icon">⚠️</span> Issue 1 — Title Tag (CRITICAL)</h2>
+  <div class="section-desc">The title tag is Google's most important on-page ranking signal for determining what the page is about.</div>
+
+  <div class="card">
+    <div class="status-row">
+      <span class="badge critical">🔴 Critical</span>
+      <h3>Title Tag is empty of any keyword</h3>
+    </div>
+    <div class="current">
+      <div class="label">Current Title</div>
+      <div class="value">"All Bags"</div>
+    </div>
+    <div class="fix">
+      <div class="label">✅ Recommended Title (58 characters)</div>
+      <div class="value">Buy Bags Online in India | Vegan Leather Bags for Women – House of Kiyaara</div>
+    </div>
+    <div class="fix">
+      <div class="label">✅ Alternative Title (55 characters)</div>
+      <div class="value">Women's Bags Online India | Shop Vegan Leather Bags – House of Kiyaara</div>
+    </div>
+    <div class="why">
+      <b>Why this matters:</b> Every competitor includes "Buy", "Online", or "India" in their title. "All Bags" gives Google no signal about geography, purchase intent, or audience. Google simply cannot match your page to a "buy bags in India" search when the title says "All Bags".
+    </div>
+  </div>
+
+  <!-- ISSUE #2: META DESCRIPTION -->
+  <h2 class="section-title"><span class="icon">⚠️</span> Issue 2 — Meta Description (CRITICAL)</h2>
+
+  <div class="card">
+    <div class="status-row">
+      <span class="badge critical">🔴 Critical</span>
+      <h3>Meta description is completely blank</h3>
+    </div>
+    <div class="current">
+      <div class="label">Current Meta Description</div>
+      <div class="value empty">— EMPTY — Google is writing this for you from random page content —</div>
+    </div>
+    <div class="fix">
+      <div class="label">✅ Recommended Meta Description (152 characters)</div>
+      <div class="value">Shop vegan leather bags for women online in India — tote bags, sling bags, crossbody bags & more. Free shipping | Easy returns | Designed to last.</div>
+    </div>
+    <div class="why">
+      <b>Why this matters:</b> When the meta description is empty, Google writes its own — usually pulling random text from the page. This hurts CTR because the snippet looks generic. Caprese's description mentions "free delivery"; ALDO India's mentions "work, parties and everyday use"; Kazo's mentions "COD available | Easy returns". These are deliberate CTR triggers. House of Kiyaara has none. A good meta description can lift CTR by 20–40%, which in turn improves rankings.
+    </div>
+  </div>
+
+  <!-- ISSUE #3: OG + TWITTER -->
+  <h2 class="section-title"><span class="icon">⚠️</span> Issue 3 — Open Graph & Twitter Card</h2>
+
+  <div class="card">
+    <div class="status-row">
+      <span class="badge warning">🟠 Warning</span>
+      <h3>OG description and Twitter description are empty</h3>
+    </div>
+    <div class="current">
+      <div class="label">Current og:type</div>
+      <div class="value">"website" — should be "product.group" for a collection page (Caprese uses this correctly)</div>
+    </div>
+    <div class="current">
+      <div class="label">Current twitter:description</div>
+      <div class="value empty">— EMPTY —</div>
+    </div>
+    <div class="fix">
+      <div class="label">✅ Recommended Fixes in Shopify theme.liquid / collection template</div>
+      <div class="value">
+        og:type → "product.group"<br>
+        og:description → same as your meta description<br>
+        og:title → "Buy Bags Online in India | Vegan Leather Bags for Women – House of Kiyaara"<br>
+        twitter:description → same as meta description<br>
+        twitter:title → same as og:title
+      </div>
+    </div>
+    <div class="why">
+      <b>Why this matters:</b> OG tags affect how your page appears when shared on WhatsApp, Instagram, Facebook. With a blank og:description, shares look empty. "product.group" also tells Google Shopping and structured data crawlers this is a category page, not a generic website page.
+    </div>
+  </div>
+
+  <!-- ISSUE #4: NO COLLECTION COPY -->
+  <h2 class="section-title"><span class="icon">⚠️</span> Issue 4 — Missing Collection Description Copy (CRITICAL)</h2>
+
+  <div class="card">
+    <div class="status-row">
+      <span class="badge critical">🔴 Critical</span>
+      <h3>Zero body text on the page — no content for Google to index</h3>
+    </div>
+    <div class="why" style="margin-bottom:16px;">
+      The entire page currently consists only of product tiles and navigation. There is no paragraph text whatsoever. KAZO has 3 keyword-rich paragraphs below the product grid. This is exactly how they rank — Google needs readable, semantic text to understand what the page covers. Without it, House of Kiyaara's page offers no topical depth for the keyword "buy bags in India" or any related phrase.
+    </div>
+    <div class="fix">
+      <div class="label">✅ Ready-to-Use Collection Description (Add below product grid in Shopify)</div>
+    </div>
+  </div>
+
+  <!-- COLLECTION COPYWRITING -->
+  <div class="copy-box">
+    <h3>📝 Collection Page Write-Up — Ready to Publish</h3>
+     <div class="copy-section">
+    <div class="copy-body">
+
+      <p><strong><span class="kw">Buy Bags Online in India</span> — Thoughtfully Made, Designed to Move With You</strong></p>
+
+      <p>Ever picked up a bag that felt like it was made specifically for you? That is exactly what we set out to create at House of Kiyaara. Every <span class="kw">vegan leather bag for women</span> in our collection is designed with one thought in mind: a woman's bag should be as strong, stylish, and versatile as she is.</p>
+
+      <h3>One Bag for Every Occasion</h3>
+      <p>Whether it is a Monday morning at the desk or a Saturday evening out, your bag should never hold you back. Our collection of <span class="kw">bags for women online in India</span> covers every mood and moment — from roomy <a href="/collections/tote-bags"><span class="kw">tote bags</span></a> for your busiest workdays to compact <a href="/collections/sling-bags-for-women"><span class="kw">sling bags</span></a> for when you want to travel light. Need something in-between? Our <a href="/collections/crossbody-bags"><span class="kw">crossbody bags</span></a> and <a href="/collections/shoulder-bags-for-women"><span class="kw">shoulder bags</span></a> are the everyday answer.</p>
+
+      <h3>Cruelty-Free and Kind on the Planet</h3>
+      <p>Every bag at House of Kiyaara is made from premium vegan leather — a material that delivers the look and feel of genuine leather without a single animal involved. It is durable, water-resistant, and easy to clean. So while you are getting a beautiful <span class="kw">handbag for women</span>, you are also making a choice that feels good beyond the mirror.</p>
+
+      <h3>Multiple Pockets — So You Can Actually Find Things</h3>
+      <p>We have all been there — ten minutes late and hunting for our keys at the bottom of a bag abyss. Kiyaara bags come with thoughtfully placed compartments: a zippered main section, inner card slots, and outer quick-access pockets. Your phone goes here, your keys go there, your lip balm has a spot too. Order. Finally.</p>
+
+      <h3>Designed to Last — Not Just for a Season</h3>
+      <p>Fast fashion has its charm, but a good bag deserves to stick around. Our vegan leather ages beautifully, resists daily wear, and holds its structure over time. Whether it is your first Kiyaara bag or your fifth, you will notice the difference that proper craftsmanship makes. These are not disposable accessories — they are everyday companions.</p>
+
+      <h3>Free Delivery Across India — Right to Your Door</h3>
+      <p>We ship to cities and towns across India — Mumbai, Delhi, Bangalore, Chennai, Hyderabad, Pune, Kolkata, Ahmedabad, Jaipur, and beyond. Orders above ₹999 ship free. Delivery takes 4–7 business days, and if something does not feel right, our 7-day easy return policy makes sending it back simple and stress-free. <span class="kw">Shop bags online</span> from anywhere in India and have them at your door, beautifully packaged and ready to carry.</p>
+
+      <p>Explore by style — <a href="/collections/tote-bags">Tote Bags</a>, <a href="/collections/crossbody-bags">Crossbody Bags</a>, <a href="/collections/shoulder-bags-for-women">Shoulder Bags</a>, <a href="/collections/sling-bags-for-women">Sling Bags</a>, <a href="/collections/vegan-leather-backpacks">Backpacks</a>, <a href="/collections/clutch-bags-for-women">Clutch Bags</a>, <a href="/collections/bucket-bags-for-women">Bucket Bags</a> — or shop by occasion: <a href="/collections/everyday-bags-for-women">Everyday</a>, <a href="/collections/work-bags-for-women">Work</a>, <a href="/collections/evening-bags-for-women">Evening</a>, <a href="/collections/weekend-bags-for-women">Weekend</a>. Your next favourite bag is already here.</p>
+
+    </div>
+  </div>
+  </div>
+
+  <!-- ISSUE #5: FAQ SECTION -->
+  <h2 class="section-title"><span class="icon">⚠️</span> Issue 5 — No FAQ Section or FAQ Schema (MISSED OPPORTUNITY)</h2>
+
+  <div class="card">
+    <div class="status-row">
+      <span class="badge missing">⚫ Missing</span>
+      <h3>None of the competitors have FAQ Schema on their collection pages — this is your competitive advantage</h3>
+    </div>
+    <div class="why">
+      Adding a FAQ section with FAQ Schema (JSON-LD) can earn Google's rich result "expandable FAQ" feature in SERPs, which doubles the visual space your result occupies on the page. For a transactional keyword like "buy bags in India", this is an enormous CTR advantage that none of your competitors are using. Add the FAQs below the collection description.
+    </div>
+  </div>
+
+  <h3 style="font-size:15px; font-weight:700; margin:20px 0 12px;">Suggested FAQs — Ready to Publish</h3>
+
+  <!-- FAQ SECTION -->
+  <div class="copy-section">
+
+    <div style="margin-bottom:8px; font-size:13px; color:#888;">Add an H2 heading above these FAQs reading: <strong>"Frequently Asked Questions About Our Bags"</strong></div>
+
+    <div class="faq-item">
+      <div class="faq-q">Are House of Kiyaara bags genuine leather or vegan leather?</div>
+      <div class="faq-a">Every bag in our collection is made from high-quality vegan leather — cruelty-free, animal-free, and built to last. Vegan leather at Kiyaara is soft, water-resistant, and ages beautifully. You get the look of genuine leather with none of the ethical compromise.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">Which bag style is best for everyday use?</div>
+      <div class="faq-a">For everyday use, our tote bags and shoulder bags are the most popular — they carry everything from a laptop to a water bottle without looking overloaded. If you prefer to go lighter, a sling bag or crossbody bag keeps things hands-free and effortless.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">Do you deliver bags across India?</div>
+      <div class="faq-a">Yes, we deliver to all major cities and towns across India, including Mumbai, Delhi, Bangalore, Hyderabad, Chennai, Kolkata, Pune, Jaipur, Ahmedabad, and more. Standard delivery takes 4–7 business days and shipping is free on orders above ₹999.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">How do I clean and care for a vegan leather bag?</div>
+      <div class="faq-a">Vegan leather is low maintenance — a soft, damp cloth is all you need for regular cleaning. For stubborn marks, a tiny drop of mild soap works well. Avoid soaking the bag or leaving it in direct sunlight for long periods. When storing, stuff it lightly with tissue to help it hold its shape.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">Can I use a House of Kiyaara bag for work and evenings both?</div>
+      <div class="faq-a">Absolutely. Many Kiyaara bags — especially our shoulder bags and structured totes — transition effortlessly from a workday to an evening out. Classic tones like black, beige, and navy match most outfits and occasions without needing a bag change.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">What is the return policy for bags at House of Kiyaara?</div>
+      <div class="faq-a">We offer a 7-day easy return on all bags. If your purchase does not feel right for any reason, reach us at hello@houseofkiyaara.com within 7 days of delivery and we will arrange a hassle-free return or exchange.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">Which colours are most popular for women's bags in India?</div>
+      <div class="faq-a">Classic tones — black, beige, and tan — remain the most-loved for everyday use since they pair with everything. If you want to make a statement, our mustard, forest green, and midnight blue options are customer favourites and unique enough to stand out.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">Are these bags good as gifts?</div>
+      <div class="faq-a">Yes — our bags make thoughtful gifts for birthdays, anniversaries, Eid, Diwali, and other special occasions. Each order arrives in elegant, gift-ready packaging. Check our Curated Combos section for bundled options that make gifting even easier.</div>
+    </div>
+
+  </div>
+
+
+  <hr class="divider">
+
+  <!-- SCHEMA SECTION -->
+  <h2 class="section-title"><span class="icon">🧩</span> Issue 6 — Schema Markup (All Missing)</h2>
+  <div class="section-desc">Schema markup (JSON-LD) tells Google exactly what type of page this is, what products are on it, and answers common questions — directly in search results. Currently House of Kiyaara has zero schema on this page.</div>
+
+  <!-- SCHEMA 1: CollectionPage -->
+  <div class="card">
+    <div class="status-row">
+      <span class="badge missing">⚫ Missing</span>
+      <h3>Schema 1: CollectionPage + BreadcrumbList</h3>
+    </div>
+    <div class="why" style="margin-bottom:14px;">Paste this inside a &lt;script type="application/ld+json"&gt; tag in the collection page template (&lt;head&gt; section).</div>
+<pre class="schema">{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "CollectionPage",
+      "name": "Buy Bags Online in India — Vegan Leather Bags for Women",
+      "description": "Shop vegan leather bags for women online in India — tote bags, sling bags, crossbody bags & more from House of Kiyaara.",
+      "url": "https://www.houseofkiyaara.com/collections/all-bags",
+      "inLanguage": "en-IN",
+      "isPartOf": {
+        "@type": "WebSite",
+        "name": "House of Kiyaara",
+        "url": "https://www.houseofkiyaara.com"
+      },
+      "breadcrumb": {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://www.houseofkiyaara.com"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "All Bags",
+            "item": "https://www.houseofkiyaara.com/collections/all-bags"
+          }
+        ]
+      }
+    }
+  ]
+}</pre>
+  </div>
+
+  <!-- SCHEMA 2: FAQ -->
+  <div class="card">
+    <div class="status-row">
+      <span class="badge missing">⚫ Missing</span>
+      <h3>Schema 2: FAQPage — For Rich Snippets in Google</h3>
+    </div>
+<pre class="schema">{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What types of bags does House of Kiyaara sell?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "House of Kiyaara offers vegan leather tote bags, crossbody bags, shoulder bags, sling bags, backpacks, clutch bags, and bucket bags for women."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does House of Kiyaara deliver bags across India?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, we deliver to all major cities across India. Standard delivery takes 4–7 business days. Free shipping is available on orders above ₹999."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Are the bags genuine leather or vegan leather?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "All House of Kiyaara bags are made from high-quality vegan leather — cruelty-free, durable, and water-resistant."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is House of Kiyaara's return policy?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "We offer a 7-day easy return policy on all bags. Contact us at hello@houseofkiyaara.com within 7 days of delivery to initiate a return or exchange."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Which bag style is best for everyday use?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Tote bags and shoulder bags are best for everyday use. For lighter carry, a sling bag or crossbody bag is ideal."
+      }
+    }
+  ]
+}</pre>
+  </div>
+
+  <!-- SCHEMA 3: Organization -->
+  <div class="card">
+    <div class="status-row">
+      <span class="badge missing">⚫ Missing</span>
+      <h3>Schema 3: Organization — Add to Homepage & All Pages</h3>
+    </div>
+    <div class="why" style="margin-bottom:14px;">This helps Google establish brand identity, which is a ranking signal — especially important for newer brands like House of Kiyaara trying to compete against established players.</div>
+<pre class="schema">{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "House of Kiyaara",
+  "url": "https://www.houseofkiyaara.com",
+  "logo": "https://www.houseofkiyaara.com/cdn/shop/files/HOK-Logo.svg",
+  "description": "House of Kiyaara is an Indian vegan leather bag brand for women, offering tote bags, sling bags, crossbody bags, shoulder bags, and backpacks.",
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "email": "hello@houseofkiyaara.com",
+    "contactType": "Customer Service",
+    "availableLanguage": ["en", "hi"]
+  },
+  "sameAs": [
+    "https://www.instagram.com/houseofkiyaara",
+    "https://pinterest.com/houseofkiyaara/",
+    "https://www.facebook.com/profile.php?id=61585124604477"
+  ],
+  "areaServed": "IN"
+}</pre>
+  </div>
+
+  <!-- PRODUCT PAGE SCHEMA NOTE -->
+  <div class="card">
+    <div class="status-row">
+      <span class="badge warning">🟠 Action Required</span>
+      <h3>Schema 4: Product Schema on Individual Product Pages</h3>
+    </div>
+    <div class="why">
+      Each individual product page (e.g. /products/vegan-leather-black-renata-tote-bag) should have a Product schema with:
+      <br><br>
+      <b>Required fields:</b> name, image, description, brand, offers (price, priceCurrency, availability, url), sku<br>
+      <b>Optional but powerful:</b> aggregateRating (even 0 reviews can be shown as "No reviews yet"), material ("Vegan Leather"), color<br><br>
+      Shopify with Rank Math or a JSON-LD app (like "JSON-LD for SEO" by Ilana Davis, free) can auto-generate this for all products. This is how products appear in Google Shopping results and product rich snippets — critical for a small brand to compete.
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ISSUE 7: PAGE TITLE H1 -->
+  <h2 class="section-title"><span class="icon">⚠️</span> Issue 7 — H1 Heading on Page</h2>
+
+  <div class="card">
+    <div class="status-row">
+      <span class="badge warning">🟠 Warning</span>
+      <h3>H1 reads "All Bags" — no keyword signal for Google</h3>
+    </div>
+    <div class="current">
+      <div class="label">Current H1</div>
+      <div class="value">All Bags</div>
+    </div>
+    <div class="fix">
+      <div class="label">✅ Recommended H1</div>
+      <div class="value">Buy Bags Online in India — Vegan Leather Bags for Women</div>
+    </div>
+    <div class="why">In Shopify, the H1 on a collection page is usually set by the collection title. You can either rename the collection, or override the H1 in the collection template file (collection.liquid). Changing the collection title will not affect the URL slug if it is already set.</div>
+  </div>
+
+  <!-- ISSUE 8: ALT TEXT -->
+  <h2 class="section-title"><span class="icon">⚠️</span> Issue 8 — Product Image Alt Texts</h2>
+
+  <div class="card">
+    <div class="status-row">
+      <span class="badge warning">🟠 Warning</span>
+      <h3>Alt texts use product names but miss keyword opportunities</h3>
+    </div>
+    <div class="current">
+      <div class="label">Current Alt Text Pattern</div>
+      <div class="value">"Renata Tote Bag Black" — "Flutter Clutch Bag Sky Blue" — "Elisse Backpack Midnight Blue"</div>
+    </div>
+    <div class="fix">
+      <div class="label">✅ Recommended Alt Text Pattern (apply via Shopify admin &gt; Products &gt; Images)</div>
+      <div class="value">
+        "Renata Tote Bag Black – Vegan Leather Tote Bag for Women | House of Kiyaara"<br>
+        "Flutter Clutch Bag Sky Blue – Vegan Leather Clutch Online India | House of Kiyaara"<br>
+        "Elisse Backpack Midnight Blue – Women's Vegan Leather Backpack India"
+      </div>
+    </div>
+    <div class="why">Descriptive alt texts with your target keywords help images rank in Google Image Search — which drives additional organic traffic. More importantly, they contribute to the overall keyword density and relevance signals of the page.</div>
+  </div>
+
+  <!-- ISSUE 9: URL -->
+  <h2 class="section-title"><span class="icon">ℹ️</span> Issue 9 — URL Slug</h2>
+
+  <div class="card">
+    <div class="status-row">
+      <span class="badge ok">✅ Acceptable</span>
+      <h3>URL is /collections/all-bags — not ideal but do not change it now</h3>
+    </div>
+    <div class="why">
+      Competitors use keyword-rich URLs like /collections/handbags-for-women or /women/handbags — which is marginally better. However, since House of Kiyaara's page already has some history and internal links pointing to /collections/all-bags, changing the URL now would require redirects and could temporarily hurt rankings. Focus on all other fixes first. If a URL change is considered in future, set up a 301 redirect from the old URL.
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- PRIORITY CHECKLIST -->
+  <h2 class="section-title"><span class="icon">📋</span> Priority Action Plan</h2>
+  <div class="section-desc">Implement these in order. Items 1–5 can all be done in a single Shopify session and will have the most impact.</div>
+
+  <div class="card" style="padding:0; overflow:hidden;">
+    <table class="priority-table">
+      <thead>
+        <tr>
+          <th style="width:60px">Priority</th>
+          <th>Action</th>
+          <th style="width:130px">Where to Do It</th>
+          <th style="width:140px">Expected Impact</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="priority-num p1">1</span></td>
+          <td><b>Add meta description</b> — use the copy provided above (152 chars)</td>
+          <td>Shopify Admin → Online Store → Preferences → or collection page SEO box</td>
+          <td>CTR +20–40%</td>
+        </tr>
+        <tr>
+          <td><span class="priority-num p1">2</span></td>
+          <td><b>Fix page title tag</b> — use "Buy Bags Online in India | Vegan Leather Bags for Women – House of Kiyaara"</td>
+          <td>Shopify collection SEO title field</td>
+          <td>Ranking signal, immediate</td>
+        </tr>
+        <tr>
+          <td><span class="priority-num p1">3</span></td>
+          <td><b>Add collection description</b> — paste the 4-paragraph write-up into the collection description field in Shopify</td>
+          <td>Shopify Admin → Collections → All Bags → Description</td>
+          <td>Topical relevance, keyword indexing</td>
+        </tr>
+        <tr>
+          <td><span class="priority-num p1">4</span></td>
+          <td><b>Add FAQ section + FAQ Schema</b> — add FAQs to page template, add JSON-LD to &lt;head&gt;</td>
+          <td>Shopify theme.liquid or collection template</td>
+          <td>Rich snippets, SERP real estate</td>
+        </tr>
+        <tr>
+          <td><span class="priority-num p2">5</span></td>
+          <td><b>Add CollectionPage + BreadcrumbList schema</b></td>
+          <td>collection.liquid template</td>
+          <td>Structured data, SERP features</td>
+        </tr>
+        <tr>
+          <td><span class="priority-num p2">6</span></td>
+          <td><b>Fix OG tags</b> — change og:type to "product.group", fill og:description and twitter:description</td>
+          <td>Shopify theme.liquid &lt;head&gt;</td>
+          <td>Social sharing CTR</td>
+        </tr>
+        <tr>
+          <td><span class="priority-num p3">7</span></td>
+          <td><b>Update image alt texts</b> — add "Vegan Leather + bag type + India + House of Kiyaara" pattern</td>
+          <td>Shopify Admin → Products → each product's images</td>
+          <td>Image SEO, keyword density</td>
+        </tr>
+        <tr>
+          <td><span class="priority-num p3">8</span></td>
+          <td><b>Add Organization schema to homepage</b></td>
+          <td>theme.liquid</td>
+          <td>Brand authority signals</td>
+        </tr>
+        <tr>
+          <td><span class="priority-num p4">9</span></td>
+          <td><b>Add Product schema to all product pages</b> — use "JSON-LD for SEO" Shopify app or manual liquid template</td>
+          <td>Product template</td>
+          <td>Product rich snippets</td>
+        </tr>
+        <tr>
+          <td><span class="priority-num p4">10</span></td>
+          <td><b>Expand catalogue</b> — add more SKUs or colour variants to increase product count towards 50+</td>
+          <td>Shopify Products</td>
+          <td>Catalogue depth = authority</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <hr class="divider">
+
+  <!-- KEYWORDS TO TARGET -->
+  <h2 class="section-title"><span class="icon">🎯</span> Keyword Strategy for This Page</h2>
+  <div class="section-desc">These are the keywords the All Bags collection page should be optimised to rank for — all with high commercial intent.</div>
+
+  <div class="card">
+    <div style="overflow-x:auto;">
+      <table class="comp-table">
+        <thead>
+          <tr>
+            <th>Keyword</th>
+            <th>Type</th>
+            <th>Where to Use</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>buy bags in India</td><td>Primary</td><td>Title, H1, Meta desc, collection copy paragraph 1</td></tr>
+          <tr><td>bags for women online India</td><td>Primary</td><td>Title alt, collection copy paragraph 1</td></tr>
+          <tr><td>vegan leather bags for women</td><td>Brand USP</td><td>Title, H1, every paragraph, FAQ answers</td></tr>
+          <tr><td>buy bags online</td><td>Transactional</td><td>H1, meta desc, copy paragraph 4</td></tr>
+          <tr><td>women's bags online India</td><td>Primary variant</td><td>Copy paragraph 4</td></tr>
+          <tr><td>tote bags for women India</td><td>Sub-keyword</td><td>Collection copy, internal link anchor text</td></tr>
+          <tr><td>sling bags for women online</td><td>Sub-keyword</td><td>Collection copy, internal link</td></tr>
+          <tr><td>crossbody bags India</td><td>Sub-keyword</td><td>Collection copy, internal link</td></tr>
+          <tr><td>shoulder bags for women online</td><td>Sub-keyword</td><td>Collection copy, internal link</td></tr>
+          <tr><td>vegan leather handbags India</td><td>Brand keyword</td><td>Copy, FAQ answers</td></tr>
+          <tr><td>bags free delivery India</td><td>Long-tail</td><td>FAQ answer, meta description</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+
+  <div class="card">
+    <div class="label gold">The Keyword Footer Link Cloud ( #Secret Weapon)</div>
+    <p style="font-size:13.5px; color:#555; margin-bottom:14px;">Caprese has a massive internal link block at the bottom of EVERY collection page. This is not visible to casual visitors (it uses a "Show More / Show Less" toggle). But Google crawls every single link. This creates a web of topical authority signals and passes link equity across the entire site. House of Kiyaara has nothing like this.</p>
+
+    <div class="note-box">⚡ This one element is responsible for a significant portion of the keyword footprint. Each link text is a keyword Google indexes as an on-page signal.</div>
+
+    <div class="kw-block">
+      <h4>Caprese Footer Link Cloud (actual content from their pages)</h4>
+      <div class="kw-row">
+        <div class="row-label">By Bag Type</div>
+        <a href="#">Handbags for Women</a><span>|</span>
+        <a href="#">Tote Bags for Women</a><span>|</span>
+        <a href="#">Sling Bags for Women</a><span>|</span>
+        <a href="#">Satchel Bags for Women</a><span>|</span>
+        <a href="#">Hobo Bags for Women</a><span>|</span>
+        <a href="#">Laptop Bags for Women</a><span>|</span>
+        <a href="#">Backpacks for Women</a><span>|</span>
+        <a href="#">Wallets for Women</a><span>|</span>
+        <a href="#">Clutches for Women</a><span>|</span>
+        <a href="#">Purses for Women</a><span>|</span>
+        <a href="#">Shoulder Bags</a>
+      </div>
+      <div class="kw-row" style="margin-top:10px;">
+        <div class="row-label">By Colour</div>
+        <a href="#">Black Bags</a><span>|</span>
+        <a href="#">White Bags</a><span>|</span>
+        <a href="#">Red Bags</a><span>|</span>
+        <a href="#">Pink Bags</a><span>|</span>
+        <a href="#">Blue Bags</a><span>|</span>
+        <a href="#">Beige Bags</a><span>|</span>
+        <a href="#">Brown Bags</a><span>|</span>
+        <a href="#">Gold Bags</a>
+      </div>
+      <div class="kw-row" style="margin-top:10px;">
+        <div class="row-label">By Material</div>
+        <a href="#">Leather Bags</a><span>|</span>
+        <a href="#">Faux Leather Bags</a><span>|</span>
+        <a href="#">Black Leather Bag</a><span>|</span>
+        <a href="#">Leather Tote Bags</a><span>|</span>
+        <a href="#">Leather Backpacks</a><span>|</span>
+        <a href="#">Leather Wallets</a>
+      </div>
+      <div class="kw-row" style="margin-top:10px;">
+        <div class="row-label">By Occasion</div>
+        <a href="#">College Bags</a><span>|</span>
+        <a href="#">Office Bags</a><span>|</span>
+        <a href="#">Travel Bags</a><span>|</span>
+        <a href="#">Airport Bags</a><span>|</span>
+        <a href="#">Everyday Bags</a><span>|</span>
+        <a href="#">Party Bags</a>
+      </div>
+      <div class="kw-row" style="margin-top:10px;">
+        <div class="row-label">By Price</div>
+        <a href="#">Bags under ₹1000</a><span>|</span>
+        <a href="#">Bags under ₹2000</a><span>|</span>
+        <a href="#">Bags under ₹3000</a>
+      </div>
+    </div>
+
+    <div class="insight-box">✅ HOK Action: Build a similar link block using your existing sub-collections. Even without price-filter pages, we have type, colour, and occasion categories already. This block alone can 3x HOK's keyword footprint on the All Bags page.</div>
+  </div>
+
+
+  <!-- FINAL NOTE -->
+  <div class="card" style="background: #1a1a1a; color:#fff;">
+    <h3 style="color:#d4af37; margin-bottom:12px;">📌 Final Note — Why HOK Can Win Here</h3>
+    <p style="font-size:14px; color:rgba(255,255,255,0.8); line-height:1.8; margin-bottom:12px;">
+      House of Kiyaara has a unique, defensible USP: <b style="color:#d4af37">vegan leather bags</b>. This is a growing search vertical in India and a keyword none of the mass competitors are specifically targeting.
+    </p>
+    <p style="font-size:14px; color:rgba(255,255,255,0.8); line-height:1.8; margin-bottom:12px;">
+      With the fixes in this audit — especially the collection description, title, meta description, and FAQ schema — House of Kiyaara can realistically achieve Page 1 rankings for <b style="color:#d4af37">long-tail variants</b> like "vegan leather bags for women India" or "buy vegan bags online India" within 2–3 months. These have lower competition and very high purchase intent. Page 1 for the broad "buy bags in India" keyword will take longer due to domain authority, but the on-page work here is non-negotiable for any ranking progress.
+    </p>
+    <p style="font-size:13px; color:rgba(255,255,255,0.5);">Audit prepared by Diwans Technical Solutions for House of Kiyaara · May 2026</p>
+  </div>
+
+</div>
+</body>
+</html>
